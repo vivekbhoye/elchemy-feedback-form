@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./feedback.module.css";
 
-import ReactSlider from "react-slider";
-
 import Button from "../ui/button/Button";
+
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
 
 const FeedBack = () => {
   const [currentQuestion, setCurrentQuestion] = useState();
@@ -49,16 +50,18 @@ const FeedBack = () => {
               </p>
             </div>
             <div className={styles.questionSlider}>
-              <ReactSlider
-                className="slider"
-                thumbClassName="thumb"
-                trackClassName="track"
-                min="0"
-                max="10"
-                minDistance="1"
-                renderThumb={(props, state) => (
-                  <div {...props}>{state.valueNow}</div>
-                )}
+              <Slider
+                defaultValue={0}
+                step={10}
+                min={0}
+                max={100}
+                aria-label="Default"
+                valueLabelDisplay="auto"
+                sx={{
+                  width: "100%",
+                  color: "#E85E44",
+                  marginTop: 10,
+                }}
               />
             </div>
             <Button
