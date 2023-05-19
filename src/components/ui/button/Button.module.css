@@ -1,0 +1,12 @@
+.primary {
+  background: #e85e44;
+  border-radius: 12px;
+  width: 250px;
+  height: 45px;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 25px;
+  outline: none;
+  border: none;
+  color: #fff;
+}
