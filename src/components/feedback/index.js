@@ -4,7 +4,6 @@ import styles from "./feedback.module.css";
 
 import Button from "../ui/button/Button";
 
-import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import axios from "axios";
 
@@ -14,19 +13,19 @@ const FeedBack = () => {
   let [questions, setQuestions] = useState([]);
   const [pageType, setPageType] = useState("START");
   let [questionIndex, setQuestionIndex] = useState(0);
-  let [currentRating, setCurrentRating] = useState();
+  let [currentRating, setCurrentRating] = useState(0);
   let [comment, setComment] = useState();
   let [userDetails, setUserDetails] = useState({
-    firstname: null,
-    lastname: null,
-    email: null,
-    message: null,
+    firstname: "",
+    lastname: "",
+    email: "",
+    message: "",
   });
 
   let { clientid, questionid } = useParams();
 
   useEffect(() => {
-    if (questionid && questionid == "welcome") {
+    if (questionid && questionid === "welcome") {
       setPageType("START");
     }
     setCurrentQuestion(questionid);
@@ -51,9 +50,9 @@ const FeedBack = () => {
   };
 
   const changeQuestions = (flowType = "START") => {
-    if (flowType == "START") {
+    if (flowType === "START") {
       getFeedbackDetails();
-    } else if (flowType == "QUESTION") {
+    } else if (flowType === "QUESTION") {
       updateAnswers(currentQuestion);
       setCurrentRating(0);
       setComment(null);
@@ -64,7 +63,7 @@ const FeedBack = () => {
         setQuestionIndex(questionIndex + 1);
         setCurrentQuestion(questions.data[questionIndex + 1]);
       }
-    } else if (flowType == "USER_DETAILS") {
+    } else if (flowType === "USER_DETAILS") {
       updateUserDetails();
       getFeedbackDetails();
     }
@@ -97,16 +96,17 @@ const FeedBack = () => {
       let body = {
         feedback: clientID,
       };
-      if (questionData?.question?.answer_type == "Rating") {
+      if (questionData?.question?.answer_type === "Rating") {
         body["rating"] = currentRating ? currentRating : 0;
-      } else if (questionData?.question?.answer_type == "Comment") {
+      } else if (questionData?.question?.answer_type === "Comment") {
         body["comment"] = comment;
       }
 
-      let response = await axios.put(
+      await axios.put(
         `https://staging-tracking-backend.herokuapp.com/feedback/answers/update/${questionData.answer_id}/`,
         body
       );
+      setCurrentRating(0);
     } catch (err) {
       console.log(err);
     }
@@ -163,7 +163,7 @@ const FeedBack = () => {
 
   return (
     <>
-      {pageType == "START" ? (
+      {pageType === "START" ? (
         <>
           <div className={styles.homePage}>
             <div className={styles.feedbackDataContainer}>
@@ -182,7 +182,7 @@ const FeedBack = () => {
       ) : (
         <></>
       )}
-      {pageType == "NAME" ? (
+      {pageType === "NAME" ? (
         <>
           <div className={`${styles.questionPage} container`}>
             <p className={styles.questionTitle}>Add your details</p>
@@ -239,7 +239,7 @@ const FeedBack = () => {
       ) : (
         <></>
       )}
-      {pageType == "QUESTION" ? (
+      {pageType === "QUESTION" ? (
         <>
           <div className={`${styles.questionPage} container`}>
             <p className={styles.questionTitle}>
@@ -250,7 +250,7 @@ const FeedBack = () => {
                 <strong>Q:</strong> {currentQuestion.question.question}
               </p>
             </div>
-            {currentQuestion.question.answer_type == "Rating" ? (
+            {currentQuestion.question.answer_type === "Rating" ? (
               <div className={styles.questionSlider}>
                 <Slider
                   defaultValue={0}
@@ -272,7 +272,7 @@ const FeedBack = () => {
               <></>
             )}
 
-            {currentQuestion.question.answer_type == "Comment" ? (
+            {currentQuestion.question.answer_type === "Comment" ? (
               <div className={styles.questionSlider}>
                 <textarea
                   placeholder="Type your answer here"
@@ -299,7 +299,7 @@ const FeedBack = () => {
       ) : (
         <></>
       )}
-      {pageType == "END" ? (
+      {pageType === "END" ? (
         <>
           <div className={styles.feedBackSubmitted}>
             <p className={styles.feedBackData}>
