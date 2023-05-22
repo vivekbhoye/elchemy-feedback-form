@@ -28,10 +28,8 @@ const FeedBack = () => {
     if (questionid && questionid === "welcome") {
       setPageType("START");
     }
-    setCurrentQuestion(questionid);
+    // setCurrentQuestion(questionid);
     setClientID(clientid);
-    // getFeedbackDetails();
-    // getQuestions();
   }, []);
 
   const getFeedbackDetails = async () => {
@@ -43,13 +41,14 @@ const FeedBack = () => {
         setPageType("END");
       } else if (!feedbackResponse.data.data[0].first_name) {
         setPageType("NAME");
+        getQuestions("NAME");
       } else {
         getQuestions();
       }
     }
   };
 
-  const changeQuestions = (flowType = "START") => {
+  const changeQuestions = async (flowType = "START") => {
     if (flowType === "START") {
       getFeedbackDetails();
     } else if (flowType === "QUESTION") {
@@ -65,11 +64,15 @@ const FeedBack = () => {
       }
     } else if (flowType === "USER_DETAILS") {
       updateUserDetails();
-      getFeedbackDetails();
+
+      // setPageType("QUESTION");
+      // await getFeedbackDetails();
+      // setQuestionIndex(0);
+      // setCurrentQuestion(questions.data[0]);
     }
   };
 
-  const getQuestions = async () => {
+  const getQuestions = async (setType = null) => {
     try {
       let questionsData = await axios.get(
         `https://staging-tracking-backend.herokuapp.com/feedback/answers/${clientID}`
@@ -78,7 +81,7 @@ const FeedBack = () => {
       if (questionsData.data && questionsData.data.success) {
         if (questionsData.data.is_completed) {
           setPageType("END");
-        } else {
+        } else if (setType != "NAME") {
           setPageType("QUESTION");
         }
         setCurrentQuestion(questionsData.data?.data[0]);
@@ -145,17 +148,18 @@ const FeedBack = () => {
       ) {
         userDetailsCopy["message"] = "Enter valid email";
         setUserDetails(userDetailsCopy);
+        return;
       }
       let body = {
         first_name: userDetails.firstname,
         last_name: userDetails.lastname,
         email: userDetails.email,
       };
-      let response = await axios.put(
+      await axios.put(
         `https://staging-tracking-backend.herokuapp.com/feedback/feedbacks/update/${clientID}/`,
         body
       );
-      setPageType("QUESTIONS");
+      setPageType("QUESTION");
     } catch (err) {
       console.log(err);
     }
@@ -207,7 +211,7 @@ const FeedBack = () => {
                 placeholder="Doe"
                 value={userDetails.lastname}
                 onChange={(e) =>
-                  handleUserDetailsChange("lastnme", e.target.value)
+                  handleUserDetailsChange("lastname", e.target.value)
                 }
               />
               <br />
@@ -243,11 +247,11 @@ const FeedBack = () => {
         <>
           <div className={`${styles.questionPage} container`}>
             <p className={styles.questionTitle}>
-              {currentQuestion.question.question_title}
+              {currentQuestion?.question?.question_title}
             </p>
             <div className={styles.questionContainer}>
               <p className={styles.questionData}>
-                <strong>Q:</strong> {currentQuestion.question.question}
+                <strong>Q:</strong> {currentQuestion?.question?.question}
               </p>
             </div>
             {currentQuestion.question.answer_type === "Rating" ? (
