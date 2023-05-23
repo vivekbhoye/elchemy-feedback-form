@@ -34,7 +34,7 @@ const FeedBack = () => {
 
   const getFeedbackDetails = async () => {
     let feedbackResponse = await axios.get(
-      `https://staging-tracking-backend.herokuapp.com/feedback/feedbacks/${clientID}`
+      `${process.env.REACT_APP_BACKEND_DOMAIN}/feedback/feedbacks/${clientID}`
     );
     if (feedbackResponse.data && feedbackResponse.data.success) {
       if (feedbackResponse.data?.data[0]?.is_completed) {
@@ -64,18 +64,13 @@ const FeedBack = () => {
       }
     } else if (flowType === "USER_DETAILS") {
       updateUserDetails();
-
-      // setPageType("QUESTION");
-      // await getFeedbackDetails();
-      // setQuestionIndex(0);
-      // setCurrentQuestion(questions.data[0]);
     }
   };
 
   const getQuestions = async (setType = null) => {
     try {
       let questionsData = await axios.get(
-        `https://staging-tracking-backend.herokuapp.com/feedback/answers/${clientID}`
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/feedback/answers/${clientID}`
       );
       setQuestions(questionsData.data);
       if (questionsData.data && questionsData.data.success) {
@@ -106,7 +101,7 @@ const FeedBack = () => {
       }
 
       await axios.put(
-        `https://staging-tracking-backend.herokuapp.com/feedback/answers/update/${questionData.answer_id}/`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/feedback/answers/update/${questionData.answer_id}/`,
         body
       );
       setCurrentRating(0);
@@ -156,7 +151,7 @@ const FeedBack = () => {
         email: userDetails.email,
       };
       await axios.put(
-        `https://staging-tracking-backend.herokuapp.com/feedback/feedbacks/update/${clientID}/`,
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/feedback/feedbacks/update/${clientID}/`,
         body
       );
       setPageType("QUESTION");
