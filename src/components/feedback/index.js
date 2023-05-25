@@ -302,7 +302,7 @@ const FeedBack = () => {
         <>
           <div className={styles.feedBackSubmitted}>
             <p className={styles.feedBackData}>
-              Your responses have been submitted, Thank You!
+              Your responses have been submitted, <br /> Thank You!
             </p>
           </div>
         </>
