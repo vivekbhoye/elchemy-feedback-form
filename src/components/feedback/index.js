@@ -39,7 +39,7 @@ const FeedBack = () => {
     if (feedbackResponse.data && feedbackResponse.data.success) {
       if (feedbackResponse.data?.data[0]?.is_completed) {
         setPageType("END");
-      } else if (!feedbackResponse.data.data[0].first_name) {
+      } else if (!feedbackResponse?.data.data[0]?.first_name) {
         setPageType("NAME");
         getQuestions("NAME");
       } else {
