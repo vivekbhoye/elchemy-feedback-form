@@ -215,7 +215,7 @@ const FeedBack = () => {
             <div className={styles.feedbackDataContainer}>
               <div className={styles.feedbackTitle}>
                 <p>
-                  FeedBack <br />
+                  Feedback <br />
                   Form
                 </p>
               </div>
@@ -350,7 +350,7 @@ const FeedBack = () => {
         <>
           <div className={styles.feedBackSubmitted}>
             <p className={styles.feedBackData}>
-              Your responses have been submitted, <br /> Thank You!
+              Thank you for your valuable feedback
             </p>
           </div>
         </>
